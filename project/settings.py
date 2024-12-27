@@ -22,6 +22,12 @@ SHARED_APPS = (
 )
 
 TENANT_APPS = (
+    "django.contrib.contenttypes",
+    "django.contrib.auth",
+    "django.contrib.sessions",
+    "django.contrib.sites",
+    "django.contrib.messages",
+    "django.contrib.admin",
     "app",
 )
 
@@ -90,6 +96,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 TENANT_MODEL = "customers.Tenant"
 TENANT_DOMAIN_MODEL = "customers.Domain"
+PUBLIC_SCHEMA_URLCONF = "customers.urls"
 
 LANGUAGE_CODE = "en-us"
 
