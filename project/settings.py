@@ -10,16 +10,27 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
+SHARED_APPS = (
+    "django_tenants",
+    "customers",
     "django.contrib.contenttypes",
+    "django.contrib.auth",
     "django.contrib.sessions",
+    "django.contrib.sites",
     "django.contrib.messages",
-    "django.contrib.staticfiles",
+    "django.contrib.admin",
+)
+
+TENANT_APPS = (
+    "app",
+)
+
+INSTALLED_APPS = list(SHARED_APPS) + [
+    app for app in TENANT_APPS if app not in SHARED_APPS
 ]
 
 MIDDLEWARE = [
+    "django_tenants.middleware.main.TenantMainMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -51,10 +62,16 @@ WSGI_APPLICATION = "project.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django_tenants.postgresql_backend",
+        "NAME": "dynamic_test",
+        "USER": "postgres",
+        "PASSWORD": "postgres",
+        "HOST": "127.0.0.1",
+        "PORT": 5432,
     }
 }
+
+DATABASE_ROUTERS = ("django_tenants.routers.TenantSyncRouter",)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -70,6 +87,9 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+TENANT_MODEL = "customers.Tenant"
+TENANT_DOMAIN_MODEL = "customers.Domain"
 
 LANGUAGE_CODE = "en-us"
 
