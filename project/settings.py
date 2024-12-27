@@ -19,6 +19,7 @@ SHARED_APPS = (
     "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.admin",
+    "rest_framework",
 )
 
 TENANT_APPS = (
@@ -93,6 +94,15 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.BasicAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",
+    ],
+}
 
 TENANT_MODEL = "customers.Tenant"
 TENANT_DOMAIN_MODEL = "customers.Domain"

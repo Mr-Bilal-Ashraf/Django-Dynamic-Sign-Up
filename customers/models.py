@@ -19,3 +19,12 @@ class Domain(DomainMixin):
 class TenantSignUpTemplate(models.Model):
     tenant = models.OneToOneField(Tenant, on_delete=models.CASCADE)
     fields = models.JSONField()
+
+
+# fields expected data in following format
+#
+# [
+#     {"step": 1, "fields": [{"name": "username", "type": "char", "required": True, "max_length": 50}]},
+#     {"step": 2, "fields": [{"name": "email", "type": "email", "required": True}]},
+#     {"step": 3, "fields": [{"name": "age", "type": "integer", "required": False}]}
+# ]
