@@ -5,6 +5,9 @@ from django_tenants.models import TenantMixin, DomainMixin
 class Tenant(TenantMixin):
     name = models.CharField(max_length=100)
     created_on = models.DateField(auto_now_add=True)
+    signup_template = models.OneToOneField(
+        "SignUpTemplate", on_delete=models.CASCADE, null=True, blank=True
+    )
 
     auto_create_schema = True
 
