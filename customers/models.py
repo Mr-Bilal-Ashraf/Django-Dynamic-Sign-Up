@@ -16,8 +16,7 @@ class Domain(DomainMixin):
     pass
 
 
-class TenantSignUpTemplate(models.Model):
-    tenant = models.OneToOneField(Tenant, on_delete=models.CASCADE)
+class SignUpTemplate(models.Model):
     fields = models.JSONField()
 
 
