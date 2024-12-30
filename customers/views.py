@@ -1,17 +1,10 @@
-from rest_framework.response import Response
-from rest_framework import views, status
+from rest_framework import viewsets
 
 from customers import serializers
 from customers import models
 
 
-class TenantSignUpTemplateView(views.APIView):
-
-    def post(self, request, format=None):
-        serializer = serializers.TemplateSerializer(
-            data=request.data, context={"tenant": request.tenant}
-        )
-        if serializer.is_valid():
-            serializer.save(tenant=request.tenant)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class SignUpTemplateView(viewsets.ModelViewSet):
+    http_method_names = ["get", "post", "put", "delete"]
+    serializer_class = serializers.TemplateSerializer
+    queryset = models.SignUpTemplate.objects.all()

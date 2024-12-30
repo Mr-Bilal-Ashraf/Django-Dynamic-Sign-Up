@@ -1,3 +1,4 @@
+from rest_framework.fields import empty
 from rest_framework import serializers
 
 from customers import models
@@ -43,19 +44,13 @@ class StepSerializer(serializers.Serializer):
     fields = FieldSerializer(many=True)
 
 
-class TemplateSerializer(serializers.Serializer):
-    steps = StepSerializer(many=True)
+class TemplateSerializer(serializers.ModelSerializer):
 
-    def validate(self, data):
-        tenant = self.context.get("tenant")
-        if models.TenantSignUpTemplate.objects.filter(tenant=tenant).exists():
-            raise serializers.ValidationError(
-                {"detail": "Template already exists, try updating"}
-            )
-        return data
+    class Meta:
+        model = models.SignUpTemplate
+        fields = ["id", "fields"]
 
-    def save(self, **kwargs):
-        obj = models.TenantSignUpTemplate.objects.create(
-            tenant=kwargs.get("tenant"), fields=self.validated_data
-        )
-        return obj
+    def __init__(self, instance=None, data=empty, **kwargs):
+        super().__init__(instance, data, **kwargs)
+        if data is not empty:
+            self.fields["fields"] = StepSerializer(many=True)
