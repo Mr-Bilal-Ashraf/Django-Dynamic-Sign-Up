@@ -43,6 +43,18 @@ class StepSerializer(serializers.Serializer):
     step = serializers.IntegerField(required=True)
     fields = FieldSerializer(many=True)
 
+    def validate(self, attrs):
+        attrs = super().validate(attrs)
+        if attrs["step"] == 1:
+            required_fields = ["email", "first_name", "last_name", "password"]
+            steps = [step.get("name", "") for step in attrs["fields"]]
+
+            if any(field not in steps for field in required_fields):
+                raise serializers.ValidationError(
+                    f"'{', '.join(required_fields)}' are compulsory in step 1."
+                )
+        return attrs
+
 
 class TemplateSerializer(serializers.ModelSerializer):
 
