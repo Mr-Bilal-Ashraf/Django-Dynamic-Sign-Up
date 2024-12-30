@@ -1,9 +1,9 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from rest_framework import generics, viewsets
 
-from django_tenants.utils import get_tenant_model
+from customers.serializers import TemplateSerializer
+from customers import models as CustomerModels
 
 
-def abc(request):
-    t = get_tenant_model().objects.get(schema_name=request.tenant.schema_name)
-    return HttpResponse(f"Hello {t.name}")
+class SignUpTemplateView(generics.ListAPIView):
+    queryset = CustomerModels.SignUpTemplate.objects.all()
+    serializer_class = TemplateSerializer
